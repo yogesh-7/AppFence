@@ -1,9 +1,10 @@
 package com.yogesh.appfence.ui
 
+import android.animation.ObjectAnimator
 import android.app.Activity
-import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.core.animation.doOnEnd
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,7 +26,6 @@ import com.yogesh.appfence.ui.screens.SettingsScreen
 import com.yogesh.appfence.ui.theme.AppFenceTheme
 import com.yogesh.appfence.ui.viewmodel.MainViewModel
 import com.yogesh.appfence.ui.viewmodel.SettingsViewModel
-import com.yogesh.appfence.vpn.NetworkType
 
 /**
  * Single-activity host for the entire Compose UI.
@@ -55,7 +57,28 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+
+
+        splashScreen.setKeepOnScreenCondition {
+            mainViewModel.isLoading.value
+        }
+
+        //Subtle fade-out animation
+        splashScreen.setOnExitAnimationListener { splashScreenView ->
+            val fadeOut = ObjectAnimator.ofFloat(
+                splashScreenView.view,
+                View.ALPHA,
+                1f,
+                0f
+            )
+            fadeOut.duration = 400L //400ms fade
+            fadeOut.doOnEnd { splashScreenView.remove() }
+            fadeOut.start()
+        }
         enableEdgeToEdge()
 
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]

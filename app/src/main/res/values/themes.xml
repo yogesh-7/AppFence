@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.AppFence" parent="android:Theme.Material.NoActionBar" />
+<style name="Theme.AppFence.Splash" parent="Theme.SplashScreen">
+    <item name="windowSplashScreenBackground">@color/splash_background</item>
+    <item name="postSplashScreenTheme">@style/Theme.AppFence</item>
+    <item name="windowSplashScreenAnimatedIcon">@drawable/avd_appfence_pulse</item>
+    <item name="windowSplashScreenAnimationDuration">800</item>
+</style>
 </resources>
