@@ -1,0 +1,125 @@
+{
+  "collections": [
+    {
+      "name": "Colors",
+      "modes": ["Dark"],
+      "variables": [
+        { "name": "primary/default",        "type": "COLOR", "values": { "Dark": "#00E5CC" } },
+        { "name": "primary/variant",        "type": "COLOR", "values": { "Dark": "#00BFA5" } },
+        { "name": "primary/dark",           "type": "COLOR", "values": { "Dark": "#009688" } },
+        { "name": "primary/on",             "type": "COLOR", "values": { "Dark": "#003731" } },
+        { "name": "secondary/default",      "type": "COLOR", "values": { "Dark": "#64B5F6" } },
+        { "name": "secondary/variant",      "type": "COLOR", "values": { "Dark": "#42A5F5" } },
+        { "name": "secondary/on",           "type": "COLOR", "values": { "Dark": "#0D1B2A" } },
+        { "name": "background/default",     "type": "COLOR", "values": { "Dark": "#0D1B2A" } },
+        { "name": "surface/default",        "type": "COLOR", "values": { "Dark": "#1B2838" } },
+        { "name": "surface/variant",        "type": "COLOR", "values": { "Dark": "#243447" } },
+        { "name": "surface/elevated",       "type": "COLOR", "values": { "Dark": "#2C3E50" } },
+        { "name": "on-background",          "type": "COLOR", "values": { "Dark": "#E0E0E0" } },
+        { "name": "on-surface",             "type": "COLOR", "values": { "Dark": "#E0E0E0" } },
+        { "name": "on-surface/variant",     "type": "COLOR", "values": { "Dark": "#B0BEC5" } },
+        { "name": "status/allowed",         "type": "COLOR", "values": { "Dark": "#4CAF50" } },
+        { "name": "status/wifi-only",       "type": "COLOR", "values": { "Dark": "#42A5F5" } },
+        { "name": "status/data-only",       "type": "COLOR", "values": { "Dark": "#FF9800" } },
+        { "name": "status/blocked",         "type": "COLOR", "values": { "Dark": "#EF5350" } },
+        { "name": "utility/error",          "type": "COLOR", "values": { "Dark": "#CF6679" } },
+        { "name": "utility/divider",        "type": "COLOR", "values": { "Dark": "#37474F" } },
+        { "name": "utility/shimmer-base",   "type": "COLOR", "values": { "Dark": "#1B2838" } },
+        { "name": "utility/shimmer-highlight","type": "COLOR","values": { "Dark": "#2C3E50" } }
+      ]
+    },
+    {
+      "name": "Typography",
+      "modes": ["Dark"],
+      "variables": [
+        { "name": "display-large/size",         "type": "FLOAT", "values": { "Dark": 32 } },
+        { "name": "display-large/weight",       "type": "FLOAT", "values": { "Dark": 700 } },
+        { "name": "display-large/lineHeight",   "type": "FLOAT", "values": { "Dark": 40 } },
+        { "name": "display-large/tracking",     "type": "FLOAT", "values": { "Dark": -0.5 } },
+
+        { "name": "headline-large/size",        "type": "FLOAT", "values": { "Dark": 28 } },
+        { "name": "headline-large/weight",      "type": "FLOAT", "values": { "Dark": 700 } },
+        { "name": "headline-large/lineHeight",  "type": "FLOAT", "values": { "Dark": 36 } },
+
+        { "name": "headline-medium/size",       "type": "FLOAT", "values": { "Dark": 24 } },
+        { "name": "headline-medium/weight",     "type": "FLOAT", "values": { "Dark": 600 } },
+        { "name": "headline-medium/lineHeight", "type": "FLOAT", "values": { "Dark": 32 } },
+
+        { "name": "headline-small/size",        "type": "FLOAT", "values": { "Dark": 20 } },
+        { "name": "headline-small/weight",      "type": "FLOAT", "values": { "Dark": 600 } },
+        { "name": "headline-small/lineHeight",  "type": "FLOAT", "values": { "Dark": 28 } },
+
+        { "name": "title-large/size",           "type": "FLOAT", "values": { "Dark": 18 } },
+        { "name": "title-large/weight",         "type": "FLOAT", "values": { "Dark": 600 } },
+        { "name": "title-large/lineHeight",     "type": "FLOAT", "values": { "Dark": 26 } },
+
+        { "name": "title-medium/size",          "type": "FLOAT", "values": { "Dark": 16 } },
+        { "name": "title-medium/weight",        "type": "FLOAT", "values": { "Dark": 500 } },
+        { "name": "title-medium/lineHeight",    "type": "FLOAT", "values": { "Dark": 24 } },
+        { "name": "title-medium/tracking",      "type": "FLOAT", "values": { "Dark": 0.15 } },
+
+        { "name": "title-small/size",           "type": "FLOAT", "values": { "Dark": 14 } },
+        { "name": "title-small/weight",         "type": "FLOAT", "values": { "Dark": 500 } },
+        { "name": "title-small/lineHeight",     "type": "FLOAT", "values": { "Dark": 20 } },
+        { "name": "title-small/tracking",       "type": "FLOAT", "values": { "Dark": 0.10 } },
+
+        { "name": "body-large/size",            "type": "FLOAT", "values": { "Dark": 16 } },
+        { "name": "body-large/weight",          "type": "FLOAT", "values": { "Dark": 400 } },
+        { "name": "body-large/lineHeight",      "type": "FLOAT", "values": { "Dark": 24 } },
+        { "name": "body-large/tracking",        "type": "FLOAT", "values": { "Dark": 0.5 } },
+
+        { "name": "body-medium/size",           "type": "FLOAT", "values": { "Dark": 14 } },
+        { "name": "body-medium/weight",         "type": "FLOAT", "values": { "Dark": 400 } },
+        { "name": "body-medium/lineHeight",     "type": "FLOAT", "values": { "Dark": 20 } },
+        { "name": "body-medium/tracking",       "type": "FLOAT", "values": { "Dark": 0.25 } },
+
+        { "name": "body-small/size",            "type": "FLOAT", "values": { "Dark": 12 } },
+        { "name": "body-small/weight",          "type": "FLOAT", "values": { "Dark": 400 } },
+        { "name": "body-small/lineHeight",      "type": "FLOAT", "values": { "Dark": 16 } },
+        { "name": "body-small/tracking",        "type": "FLOAT", "values": { "Dark": 0.4 } },
+
+        { "name": "label-large/size",           "type": "FLOAT", "values": { "Dark": 14 } },
+        { "name": "label-large/weight",         "type": "FLOAT", "values": { "Dark": 500 } },
+        { "name": "label-large/lineHeight",     "type": "FLOAT", "values": { "Dark": 20 } },
+        { "name": "label-large/tracking",       "type": "FLOAT", "values": { "Dark": 0.1 } },
+
+        { "name": "label-medium/size",          "type": "FLOAT", "values": { "Dark": 12 } },
+        { "name": "label-medium/weight",        "type": "FLOAT", "values": { "Dark": 500 } },
+        { "name": "label-medium/lineHeight",    "type": "FLOAT", "values": { "Dark": 16 } },
+        { "name": "label-medium/tracking",      "type": "FLOAT", "values": { "Dark": 0.5 } },
+
+        { "name": "label-small/size",           "type": "FLOAT", "values": { "Dark": 10 } },
+        { "name": "label-small/weight",         "type": "FLOAT", "values": { "Dark": 500 } },
+        { "name": "label-small/lineHeight",     "type": "FLOAT", "values": { "Dark": 14 } },
+        { "name": "label-small/tracking",       "type": "FLOAT", "values": { "Dark": 0.5 } }
+      ]
+    },
+    {
+      "name": "Spacing",
+      "modes": ["Dark"],
+      "variables": [
+        { "name": "1",  "type": "FLOAT", "values": { "Dark": 4 } },
+        { "name": "2",  "type": "FLOAT", "values": { "Dark": 8 } },
+        { "name": "3",  "type": "FLOAT", "values": { "Dark": 12 } },
+        { "name": "4",  "type": "FLOAT", "values": { "Dark": 16 } },
+        { "name": "5",  "type": "FLOAT", "values": { "Dark": 20 } },
+        { "name": "6",  "type": "FLOAT", "values": { "Dark": 24 } },
+        { "name": "8",  "type": "FLOAT", "values": { "Dark": 32 } },
+        { "name": "12", "type": "FLOAT", "values": { "Dark": 48 } },
+        { "name": "14", "type": "FLOAT", "values": { "Dark": 56 } }
+      ]
+    },
+    {
+      "name": "Radius",
+      "modes": ["Dark"],
+      "variables": [
+        { "name": "xsmall", "type": "FLOAT", "values": { "Dark": 6 } },
+        { "name": "small",  "type": "FLOAT", "values": { "Dark": 12 } },
+        { "name": "medium", "type": "FLOAT", "values": { "Dark": 14 } },
+        { "name": "large",  "type": "FLOAT", "values": { "Dark": 16 } },
+        { "name": "xlarge", "type": "FLOAT", "values": { "Dark": 20 } },
+        { "name": "full",   "type": "FLOAT", "values": { "Dark": 9999 } }
+      ]
+    }
+  ]
+}

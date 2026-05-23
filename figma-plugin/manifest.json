@@ -1,0 +1,8 @@
+{
+  "name": "AppFence Design System",
+  "id": "appfence-design-system-001",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "src/ui.html",
+  "editorType": ["figma"]
+}

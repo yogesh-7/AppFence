@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.SignalCellularAlt
@@ -29,6 +28,9 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -37,13 +39,15 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
+import com.yogesh.appfence.model.AppInfo
 import com.yogesh.appfence.model.AppUiState
+import com.yogesh.appfence.ui.theme.AppFenceTheme
 import com.yogesh.appfence.ui.theme.Primary
 import com.yogesh.appfence.ui.theme.Secondary
 import com.yogesh.appfence.ui.theme.StatusBlocked
-import com.yogesh.appfence.ui.theme.Surface
 import com.yogesh.appfence.ui.theme.SurfaceVariant
 
 /**
@@ -141,6 +145,70 @@ fun AppListItem(
                     onCheckedChange = onMobileToggle
                 )
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun AppIconPreview() {
+    AppFenceTheme {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .padding(16.dp)
+        ) {
+            AppIcon(drawable = null)
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun ToggleRowPreview() {
+    var checked by remember { mutableStateOf(true) }
+    AppFenceTheme {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .padding(16.dp)
+        ) {
+            ToggleRow(
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.Wifi,
+                        contentDescription = null,
+                        tint = Primary
+                    )
+                },
+                checked = checked,
+                onCheckedChange = { checked = it }
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun AppListItemPreview() {
+    val mockApp = AppUiState(
+        appInfo = AppInfo(
+            packageName = "com.example.app",
+            appName = "Example App",
+            icon = null,
+            isSystemApp = false,
+            uid = 10001
+        ),
+        wifiAllowed = true,
+        mobileAllowed = false
+    )
+    AppFenceTheme {
+        Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+            AppListItem(
+                appState = mockApp,
+                onWifiToggle = {},
+                onMobileToggle = {}
+            )
         }
     }
 }

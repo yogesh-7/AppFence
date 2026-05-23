@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 16px; background: #0D1B2A; color: #E0E0E0; margin: 0; }
+    h2 { font-size: 14px; font-weight: 700; color: #00E5CC; margin: 0 0 8px; }
+    p { font-size: 11px; color: #B0BEC5; margin: 0 0 16px; line-height: 1.5; }
+    button {
+      width: 100%; padding: 12px; background: #00E5CC; color: #003731;
+      border: none; border-radius: 8px; font-size: 13px; font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover { background: #00BFA5; }
+    button:disabled { background: #243447; color: #B0BEC5; cursor: not-allowed; }
+    #status { margin-top: 12px; font-size: 11px; color: #B0BEC5; min-height: 16px; }
+  </style>
+</head>
+<body>
+  <h2>AppFence Design System</h2>
+  <p>Creates 4 pages: Design System, Component Library, Screens, and Design Tokens with all colors, typography, components, and screen frames.</p>
+  <button id="create" onclick="onCreate()">Create Design System</button>
+  <div id="status"></div>
+  <script>
+    function onCreate() {
+      document.getElementById('create').disabled = true;
+      document.getElementById('status').textContent = 'Building design system…';
+      parent.postMessage({ pluginMessage: { type: 'create' } }, '*');
+    }
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg) return;
+      const status = document.getElementById('status');
+      const btn = document.getElementById('create');
+      if (msg.type === 'progress') {
+        status.textContent = msg.text;
+      } else if (msg.type === 'done') {
+        status.textContent = '✓ Done! ' + msg.text;
+        btn.disabled = false;
+      } else if (msg.type === 'error') {
+        status.textContent = '✗ Error: ' + msg.text;
+        btn.disabled = false;
+      }
+    };
+  </script>
+</body>
+</html>

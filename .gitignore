@@ -1,6 +1,8 @@
 # Claude Code
 .claude/
 
+.superpowers/
+
 # Gradle
 .gradle/
 build/
