@@ -1,10 +1,8 @@
 package com.yogesh.appfence.ui
 
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.net.VpnService
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
@@ -57,75 +54,62 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // 1. Initialize the system splash framework
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
+        // 2. System splash dismisses immediately so the Compose layer is visible right away.
+        // AppFenceSplashScreen handles the animated loading state instead.
+        splashScreen.setKeepOnScreenCondition { false }
 
-        splashScreen.setKeepOnScreenCondition {
-            mainViewModel.isLoading.value
-        }
-
-        //Subtle fade-out animation
-        splashScreen.setOnExitAnimationListener { splashScreenView ->
-            val fadeOut = ObjectAnimator.ofFloat(
-                splashScreenView.view,
-                View.ALPHA,
-                1f,
-                0f
-            )
-            fadeOut.duration = 400L //400ms fade
-            fadeOut.doOnEnd { splashScreenView.remove() }
-            fadeOut.start()
-        }
         enableEdgeToEdge()
-
-        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
         setContent {
             AppFenceTheme {
                 val navController = rememberNavController()
                 val onboardingCompleted by settingsViewModel.onboardingCompleted.collectAsState()
                 val networkType by settingsViewModel.networkMonitor.networkType.collectAsState()
+                val isLoading by mainViewModel.isLoading.collectAsState()
 
-                val startDestination = if (onboardingCompleted) "main" else "onboarding"
+                // 4. Fallback transition layout
+                if (isLoading) {
+                    // If there happens to be a slow cold boot or data sync on older devices,
+                    // this custom layer will catch it and display the smooth spin cleanly.
+                    com.yogesh.appfence.ui.screens.AppFenceSplashScreen()
+                } else {
+                    val startDestination = if (onboardingCompleted) "main" else "onboarding"
 
-                NavHost(
-                    navController = navController,
-                    startDestination = startDestination,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    composable("onboarding") {
-                        OnboardingScreen(
-                            onGrantVpnPermission = { requestVpnPermission() }
-                        )
+                    NavHost(
+                        navController = navController,
+                        startDestination = startDestination,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        composable("onboarding") {
+                            OnboardingScreen(onGrantVpnPermission = { requestVpnPermission() })
+                        }
+                        composable("main") {
+                            MainScreen(
+                                viewModel = mainViewModel,
+                                networkType = networkType,
+                                onNavigateToSettings = { navController.navigate("settings") }
+                            )
+                        }
+                        composable("settings") {
+                            SettingsScreen(
+                                viewModel = settingsViewModel,
+                                onNavigateBack = { navController.popBackStack() },
+                                onRequestVpnPermission = { requestVpnPermission() }
+                            )
+                        }
                     }
 
-                    composable("main") {
-                        MainScreen(
-                            viewModel = mainViewModel,
-                            networkType = networkType,
-                            onNavigateToSettings = {
-                                navController.navigate("settings")
-                            }
-                        )
-                    }
-
-                    composable("settings") {
-                        SettingsScreen(
-                            viewModel = settingsViewModel,
-                            onNavigateBack = { navController.popBackStack() },
-                            onRequestVpnPermission = { requestVpnPermission() }
-                        )
-                    }
-                }
-
-                // If onboarding was just completed, navigate to main
-                if (onboardingCompleted && navController.currentDestination?.route == "onboarding") {
-                    navController.navigate("main") {
-                        popUpTo("onboarding") { inclusive = true }
+                    if (onboardingCompleted && navController.currentDestination?.route == "onboarding") {
+                        navController.navigate("main") {
+                            popUpTo("onboarding") { inclusive = true }
+                        }
                     }
                 }
             }
