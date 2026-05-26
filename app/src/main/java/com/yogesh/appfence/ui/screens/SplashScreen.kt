@@ -19,20 +19,18 @@ import com.yogesh.appfence.R
 @Composable
 fun AppFenceSplashScreen() {
     val infiniteTransition = rememberInfiniteTransition(label = "SplashRotation")
-
     val rotationAngle by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
             animation = tween(
                 durationMillis = 1000,
-                easing = LinearEasing        // constant speed — no keyframe pause
+                easing = LinearEasing
             ),
             repeatMode = RepeatMode.Restart
         ),
         label = "LogoAngle"
     )
-
     Box(
         modifier = Modifier
             .fillMaxSize()

@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            // Permission granted — start VPN and complete onboarding
             settingsViewModel.startVpn()
             settingsViewModel.completeOnboarding()
         } else {
@@ -54,15 +53,14 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // 1. Initialize the system splash framework
+
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
-        // 2. System splash dismisses immediately so the Compose layer is visible right away.
-        // AppFenceSplashScreen handles the animated loading state instead.
+
         splashScreen.setKeepOnScreenCondition { false }
 
         enableEdgeToEdge()
@@ -74,10 +72,7 @@ class MainActivity : ComponentActivity() {
                 val networkType by settingsViewModel.networkMonitor.networkType.collectAsState()
                 val isLoading by mainViewModel.isLoading.collectAsState()
 
-                // 4. Fallback transition layout
                 if (isLoading) {
-                    // If there happens to be a slow cold boot or data sync on older devices,
-                    // this custom layer will catch it and display the smooth spin cleanly.
                     com.yogesh.appfence.ui.screens.AppFenceSplashScreen()
                 } else {
                     val startDestination = if (onboardingCompleted) "main" else "onboarding"
@@ -131,7 +126,6 @@ class MainActivity : ComponentActivity() {
         if (prepareIntent != null) {
             vpnPermissionLauncher.launch(prepareIntent)
         } else {
-            // Permission already granted
             settingsViewModel.startVpn()
             settingsViewModel.completeOnboarding()
         }
