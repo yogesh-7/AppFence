@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.interpolator)
     debugImplementation(libs.androidx.ui.tooling)
 
     // Navigation
@@ -72,4 +73,7 @@ dependencies {
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
+
+    //Splash Screen
+    implementation(libs.androidx.core.splashscreen)
 }

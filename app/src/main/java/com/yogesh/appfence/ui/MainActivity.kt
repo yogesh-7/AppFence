@@ -1,7 +1,6 @@
 package com.yogesh.appfence.ui
 
 import android.app.Activity
-import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
 import android.widget.Toast
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,7 +23,6 @@ import com.yogesh.appfence.ui.screens.SettingsScreen
 import com.yogesh.appfence.ui.theme.AppFenceTheme
 import com.yogesh.appfence.ui.viewmodel.MainViewModel
 import com.yogesh.appfence.ui.viewmodel.SettingsViewModel
-import com.yogesh.appfence.vpn.NetworkType
 
 /**
  * Single-activity host for the entire Compose UI.
@@ -42,7 +41,6 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            // Permission granted — start VPN and complete onboarding
             settingsViewModel.startVpn()
             settingsViewModel.completeOnboarding()
         } else {
@@ -55,54 +53,58 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+
+
+        splashScreen.setKeepOnScreenCondition { false }
+
+        enableEdgeToEdge()
 
         setContent {
             AppFenceTheme {
                 val navController = rememberNavController()
                 val onboardingCompleted by settingsViewModel.onboardingCompleted.collectAsState()
                 val networkType by settingsViewModel.networkMonitor.networkType.collectAsState()
+                val isLoading by mainViewModel.isLoading.collectAsState()
 
-                val startDestination = if (onboardingCompleted) "main" else "onboarding"
+                if (isLoading) {
+                    com.yogesh.appfence.ui.screens.AppFenceSplashScreen()
+                } else {
+                    val startDestination = if (onboardingCompleted) "main" else "onboarding"
 
-                NavHost(
-                    navController = navController,
-                    startDestination = startDestination,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    composable("onboarding") {
-                        OnboardingScreen(
-                            onGrantVpnPermission = { requestVpnPermission() }
-                        )
+                    NavHost(
+                        navController = navController,
+                        startDestination = startDestination,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        composable("onboarding") {
+                            OnboardingScreen(onGrantVpnPermission = { requestVpnPermission() })
+                        }
+                        composable("main") {
+                            MainScreen(
+                                viewModel = mainViewModel,
+                                networkType = networkType,
+                                onNavigateToSettings = { navController.navigate("settings") }
+                            )
+                        }
+                        composable("settings") {
+                            SettingsScreen(
+                                viewModel = settingsViewModel,
+                                onNavigateBack = { navController.popBackStack() },
+                                onRequestVpnPermission = { requestVpnPermission() }
+                            )
+                        }
                     }
 
-                    composable("main") {
-                        MainScreen(
-                            viewModel = mainViewModel,
-                            networkType = networkType,
-                            onNavigateToSettings = {
-                                navController.navigate("settings")
-                            }
-                        )
-                    }
-
-                    composable("settings") {
-                        SettingsScreen(
-                            viewModel = settingsViewModel,
-                            onNavigateBack = { navController.popBackStack() },
-                            onRequestVpnPermission = { requestVpnPermission() }
-                        )
-                    }
-                }
-
-                // If onboarding was just completed, navigate to main
-                if (onboardingCompleted && navController.currentDestination?.route == "onboarding") {
-                    navController.navigate("main") {
-                        popUpTo("onboarding") { inclusive = true }
+                    if (onboardingCompleted && navController.currentDestination?.route == "onboarding") {
+                        navController.navigate("main") {
+                            popUpTo("onboarding") { inclusive = true }
+                        }
                     }
                 }
             }
@@ -124,7 +126,6 @@ class MainActivity : ComponentActivity() {
         if (prepareIntent != null) {
             vpnPermissionLauncher.launch(prepareIntent)
         } else {
-            // Permission already granted
             settingsViewModel.startVpn()
             settingsViewModel.completeOnboarding()
         }
